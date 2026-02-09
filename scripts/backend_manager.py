@@ -63,3 +63,28 @@ if __name__ == "__main__":
         sys.exit(1)
 
     init_backend(bucket, table, region)
+
+    # Generate backend.tf in the workspace if provided
+    # The workflow calls this script. The workspace path should be passed as an argument or we default to /data/terraform_workspace
+    workspace_path = '/data/terraform_workspace'
+    if len(sys.argv) > 1:
+        workspace_path = sys.argv[1]
+
+    if os.path.exists(workspace_path):
+        backend_config = f"""
+terraform {{
+  backend "s3" {{
+    bucket         = "{bucket}"
+    key            = "terraform.tfstate"
+    region         = "{region}"
+    dynamodb_table = "{table}"
+    encrypt        = true
+  }}
+}}
+"""
+        backend_file = os.path.join(workspace_path, 'backend.tf')
+        with open(backend_file, 'w') as f:
+            f.write(backend_config)
+        print(f"Generated backend.tf at {backend_file}")
+    else:
+        print(f"Workspace path {workspace_path} does not exist. Skipping backend.tf generation.")

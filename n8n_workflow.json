@@ -54,9 +54,9 @@
     },
     {
       "parameters": {
-        "command": "python3 /data/scripts/drift_manager.py /data/terraform_workspace"
+        "command": "python3 /data/scripts/infra_generator.py /data/input.xlsx /data/terraform_workspace"
       },
-      "name": "Check Drift",
+      "name": "Generate Infra",
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
@@ -66,9 +66,9 @@
     },
     {
       "parameters": {
-        "command": "python3 /data/scripts/infra_generator.py /data/input.xlsx /data/terraform_workspace"
+        "command": "python3 /data/scripts/drift_manager.py /data/terraform_workspace"
       },
-      "name": "Generate Infra",
+      "name": "Check Drift",
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
@@ -139,17 +139,6 @@
       "main": [
         [
           {
-            "node": "Check Drift",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Check Drift": {
-      "main": [
-        [
-          {
             "node": "Generate Infra",
             "type": "main",
             "index": 0
@@ -158,6 +147,17 @@
       ]
     },
     "Generate Infra": {
+      "main": [
+        [
+          {
+            "node": "Check Drift",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Drift": {
       "main": [
         [
           {

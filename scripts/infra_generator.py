@@ -16,7 +16,6 @@ class InfrastructureGenerator:
 
     def _get_llm(self):
         if self.provider == 'ollama':
-            # Assumes Ollama is running on host or accessible via URL
             base_url = os.environ.get('OLLAMA_BASE_URL', 'http://host.docker.internal:11434')
             return ChatOllama(model=self.model_name, base_url=base_url)
         elif self.provider == 'bedrock':
@@ -36,39 +35,87 @@ class InfrastructureGenerator:
             specs[sheet_name] = df.to_dict(orient='records')
         return specs
 
-    def generate_terraform(self, specs):
-        generated_code = {}
-
-        prompt_template = PromptTemplate(
-            input_variables=["resource_type", "spec"],
+    def analyze_sheet_content(self, sheet_name, data):
+        """Asks the LLM to understand what Terraform resources this sheet represents."""
+        print(f"Analyzing sheet: {sheet_name}...")
+        prompt = PromptTemplate(
+            input_variables=["sheet_name", "data_sample"],
             template="""
-            You are an expert Terraform developer. generate valid Terraform HCL code for the following {resource_type} resources based on the specification below.
-            Do not include provider configuration. Only include resource blocks.
-            Ensure best practices, such as using variables where appropriate, but for this task, hardcoding values from the spec is acceptable if variables are not provided.
+            Analyze the following data from an Excel sheet named "{sheet_name}".
 
-            Specification:
-            {spec}
+            Data Sample (first few rows):
+            {data_sample}
 
-            Output only the Terraform code. Do not include markdown backticks or explanations.
+            Identify the most likely AWS Terraform resource type(s) that this data represents (e.g., aws_instance, aws_s3_bucket, aws_iam_role).
+            Return ONLY the Terraform resource type name(s), separated by commas if multiple. Do not include any explanation.
             """
         )
 
-        for resource_type, resource_list in specs.items():
-            print(f"Generating code for {resource_type}...")
+        # Take a sample to avoid token limits
+        sample = str(data[:3])
+        chain = prompt | self.llm
+        response = chain.invoke({"sheet_name": sheet_name, "data_sample": sample})
+        resource_types = response.content.strip()
+        print(f"Identified resource types for {sheet_name}: {resource_types}")
+        return resource_types
+
+    def generate_terraform(self, specs):
+        generated_code = {}
+
+        for sheet_name, resource_list in specs.items():
             if not resource_list:
                 continue
 
-            # Convert list of dicts to string for prompt
-            spec_str = str(resource_list)
+            # Step 1: Analyze structure
+            resource_types = self.analyze_sheet_content(sheet_name, resource_list)
+
+            # Step 2: Generate Code
+            print(f"Generating Terraform code for {sheet_name} ({resource_types})...")
+
+            prompt_template = PromptTemplate(
+                input_variables=["resource_types", "spec"],
+                template="""
+                You are an expert Terraform developer.
+                Based on the data below, generate valid Terraform HCL code for the resource type(s): {resource_types}.
+
+                The data comes from a sheet representing these resources. Each row should correspond to a resource block, unless the data suggests otherwise (e.g., rules for a security group).
+
+                Specification Data:
+                {spec}
+
+                Instructions:
+                1. Use the column headers as a guide for arguments. Infer mapping intelligently (e.g., "Name" -> "tags = {{ Name = ... }}").
+                2. Do not include provider configuration.
+                3. Output ONLY the Terraform HCL code. No markdown, no explanations.
+                4. Ensure valid HCL syntax.
+                """
+            )
 
             chain = prompt_template | self.llm
-            response = chain.invoke({"resource_type": resource_type, "spec": spec_str})
+            response = chain.invoke({"resource_types": resource_types, "spec": str(resource_list)})
 
-            # clean response if it contains markdown code blocks
-            code = response.content
-            code = code.replace("```hcl", "").replace("```terraform", "").replace("```", "").strip()
+            raw_code = response.content.replace("```hcl", "").replace("```terraform", "").replace("```", "").strip()
 
-            generated_code[resource_type] = code
+            # Step 3: Review Code (Self-Correction)
+            print(f"Reviewing generated code for {sheet_name}...")
+            review_prompt = PromptTemplate(
+                input_variables=["code"],
+                template="""
+                Review the following Terraform code for syntax errors or hallucinations.
+                If it is valid, output it exactly as is.
+                If there are errors (e.g., invalid arguments for the resource type), fix them and output the corrected code.
+
+                Code to Review:
+                {code}
+
+                Output ONLY the final valid HCL code.
+                """
+            )
+            review_chain = review_prompt | self.llm
+            reviewed_response = review_chain.invoke({"code": raw_code})
+            final_code = reviewed_response.content.replace("```hcl", "").replace("```terraform", "").replace("```", "").strip()
+
+            generated_code[sheet_name] = final_code
 
         return generated_code
 
@@ -76,9 +123,10 @@ class InfrastructureGenerator:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        for resource_type, code in code_dict.items():
-            filename = f"{resource_type.lower()}.tf"
-            filepath = os.path.join(output_dir, filename)
+        for sheet_name, code in code_dict.items():
+            # Sanitize filename
+            filename = "".join([c for c in sheet_name if c.isalnum() or c in (' ', '-', '_')]).strip().lower().replace(" ", "_")
+            filepath = os.path.join(output_dir, f"{filename}.tf")
             with open(filepath, 'w') as f:
                 f.write(code)
             print(f"Saved {filepath}")
@@ -96,7 +144,11 @@ if __name__ == "__main__":
 
     print(f"Using AI Provider: {provider}, Model: {model}")
 
-    generator = InfrastructureGenerator(provider, model)
-    specs = generator.load_spec(excel_path)
-    code = generator.generate_terraform(specs)
-    generator.save_code(code, output_dir)
+    try:
+        generator = InfrastructureGenerator(provider, model)
+        specs = generator.load_spec(excel_path)
+        code = generator.generate_terraform(specs)
+        generator.save_code(code, output_dir)
+    except Exception as e:
+        print(f"Error generating infrastructure: {e}")
+        sys.exit(1)
