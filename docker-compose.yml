@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  n8n:
+    build: .
+    container_name: n8n-terraform-automation
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=${N8N_USER:-admin}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_PASSWORD:-password}
+      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE:-UTC}
+      - TZ=${GENERIC_TIMEZONE:-UTC}
+      - WEBHOOK_URL=${WEBHOOK_URL:-http://localhost:5678/}
+      - AI_PROVIDER=${AI_PROVIDER:-ollama}
+      - AI_MODEL=${AI_MODEL:-llama3}
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      - GITLAB_URL=${GITLAB_URL}
+      - GITLAB_TOKEN=${GITLAB_TOKEN}
+      - AWS_PROFILE=${AWS_PROFILE:-default}
+      - TF_STATE_BUCKET=${TF_STATE_BUCKET}
+      - TF_STATE_TABLE=${TF_STATE_TABLE}
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+    volumes:
+      - ./n8n_data:/home/node/.n8n
+      - ./scripts:/data/scripts
+      - ./terraform_templates:/data/terraform_templates
+      - ~/.aws:/home/node/.aws:ro
+      - /var/run/docker.sock:/var/run/docker.sock # Optional: if we need to spawn containers
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  n8n_data:

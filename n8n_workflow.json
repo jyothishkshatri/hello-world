@@ -1,0 +1,183 @@
+{
+  "name": "Terraform Automation Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "process-infra",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "fileName": "/data/input.xlsx",
+        "dataPropertyName": "file"
+      },
+      "name": "Save Excel Spec",
+      "type": "n8n-nodes-base.writeBinaryFile",
+      "typeVersion": 1,
+      "position": [
+        450,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "command": "python3 /data/scripts/backend_manager.py"
+      },
+      "name": "Init Backend",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        650,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "command": "python3 /data/scripts/git_manager.py clone --repo-url {{ $items(\"Webhook\")[0].json.body.repo_url }} --repo-path /data/terraform_workspace --branch {{ $items(\"Webhook\")[0].json.body.branch_name }} --user-name 'n8n-bot' --user-email 'bot@n8n.io'"
+      },
+      "name": "Git Clone",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        850,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "command": "python3 /data/scripts/drift_manager.py /data/terraform_workspace"
+      },
+      "name": "Check Drift",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1050,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "command": "python3 /data/scripts/infra_generator.py /data/input.xlsx /data/terraform_workspace"
+      },
+      "name": "Generate Infra",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "command": "python3 /data/scripts/git_manager.py push --repo-path /data/terraform_workspace --branch {{ $items(\"Webhook\")[0].json.body.branch_name }} --message 'Update infrastructure from Excel spec'"
+      },
+      "name": "Git Push",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1450,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "command": "python3 /data/scripts/git_manager.py mr --repo-path /data/terraform_workspace --branch {{ $items(\"Webhook\")[0].json.body.branch_name }} --project-id {{ $items(\"Webhook\")[0].json.body.project_id }} --title 'Infrastructure Update'"
+      },
+      "name": "Create MR",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1650,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Save Excel Spec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Excel Spec": {
+      "main": [
+        [
+          {
+            "node": "Init Backend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Init Backend": {
+      "main": [
+        [
+          {
+            "node": "Git Clone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Git Clone": {
+      "main": [
+        [
+          {
+            "node": "Check Drift",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Drift": {
+      "main": [
+        [
+          {
+            "node": "Generate Infra",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Infra": {
+      "main": [
+        [
+          {
+            "node": "Git Push",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Git Push": {
+      "main": [
+        [
+          {
+            "node": "Create MR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

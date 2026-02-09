@@ -1,0 +1,12 @@
+pandas
+boto3
+python-gitlab
+langchain
+langchain-community
+langchain-openai
+langchain-aws
+langchain-google-vertexai
+gitpython
+requests
+openpyxl
+pyyaml
