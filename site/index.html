@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Aurea Wild is a luxury wildlife conservation website concept built around hope, habitat restoration, and joyful action." />
+    <meta name="theme-color" content="#0c1d16" />
+    <title>Aurea Wild — The wild belongs here</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Italiana&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header" data-header>
+      <div class="shell header-inner">
+        <a class="brand" href="#top" aria-label="Aurea Wild home">
+          <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+            <circle cx="24" cy="24" r="21" fill="none" stroke="currentColor" stroke-width="1.4" />
+            <path d="M14 29c8-1 14-7 18-17 2 10-2 20-13 25M18 34c2-7 7-13 14-18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+          </svg>
+          <span>AUREA <em>WILD</em></span>
+        </a>
+
+        <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
+          <span></span><span></span>
+        </button>
+
+        <nav class="site-nav" id="site-nav" aria-label="Primary" data-nav>
+          <a href="#mission">Our work</a>
+          <a href="#impact">Impact</a>
+          <a href="#stories">Stories</a>
+          <a href="#action">Take action</a>
+          <button class="button button-small button-gold" type="button" data-open-donate>Donate</button>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="hero-visual" role="img" aria-label="An African elephant in a sunlit wilderness"></div>
+        <div class="shell hero-inner">
+          <div class="hero-copy" data-reveal>
+            <p class="hero-note">Conservation, reimagined with hope.</p>
+            <h1 id="hero-title">The wild<br />belongs here.</h1>
+            <p class="hero-intro">Protect extraordinary animals, restore the places they call home, and help communities thrive alongside nature.</p>
+            <div class="hero-actions">
+              <button class="button button-primary" type="button" data-open-donate>
+                Protect a habitat
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 6l4 4-4 4" /></svg>
+              </button>
+              <button class="text-button" type="button" data-open-story>
+                <span class="play-icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="m8 6 6 4-6 4Z" /></svg></span>
+                Watch the story
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-cue" aria-hidden="true"><span></span>Scroll to discover</div>
+      </section>
+
+      <section class="impact-ribbon" aria-label="Our focus areas">
+        <div class="shell ribbon-grid">
+          <article data-reveal>
+            <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M7 24h34M24 7c5 5 8 10 8 17s-3 12-8 17c-5-5-8-10-8-17s3-12 8-17Z"/></svg>
+            <div><h2>Global reach</h2><p>Connected landscapes, local leadership.</p></div>
+          </article>
+          <article data-reveal>
+            <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M16 19c-2-5 0-9 3-9s4 5 3 9M26 17c0-5 2-8 5-7 3 2 2 6 0 10M11 25c-4-3-6 1-4 4 2 3 6 4 9 3 2 7 14 8 18 2 3-5-4-13-10-12-5 0-6 4-8 6"/></svg>
+            <div><h2>Wildlife protection</h2><p>Science, care, and safe migration.</p></div>
+          </article>
+          <article data-reveal>
+            <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 34c17-1 28-10 30-27-14 3-25 11-27 25M13 34c5-7 12-13 21-18"/></svg>
+            <div><h2>Habitat renewal</h2><p>Healthy forests, rivers, and grasslands.</p></div>
+          </article>
+          <article data-reveal>
+            <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="16" cy="17" r="5"/><circle cx="32" cy="17" r="5"/><circle cx="24" cy="13" r="6"/><path d="M7 36c1-7 5-11 10-11M41 36c-1-7-5-11-10-11M13 37c1-9 5-14 11-14s10 5 11 14"/></svg>
+            <div><h2>Shared prosperity</h2><p>Conservation that supports people too.</p></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="mission section" id="mission">
+        <div class="shell">
+          <div class="section-heading mission-heading" data-reveal>
+            <div>
+              <p class="section-label">A brighter kind of conservation</p>
+              <h2>When nature wins,<br />we all feel it.</h2>
+            </div>
+            <p>Every protected corridor, returning species, and restored river is a reason to feel hopeful. We pair rigorous fieldwork with community-led solutions that last.</p>
+          </div>
+
+          <div class="pillar-grid">
+            <article class="pillar-card pillar-card-featured" data-reveal>
+              <img src="assets/tiger.svg" alt="Tiger looking directly through green forest vegetation" />
+              <div class="pillar-copy">
+                <span>01</span>
+                <h3>Protect</h3>
+                <p>Keep threatened species safe through connected habitats and practical field protection.</p>
+                <a href="#impact">Explore wildlife programs <span aria-hidden="true">↗</span></a>
+              </div>
+            </article>
+            <article class="pillar-card" data-reveal>
+              <img src="assets/valley.svg" alt="A restored mountain valley with a winding blue river" />
+              <div class="pillar-copy">
+                <span>02</span>
+                <h3>Restore</h3>
+                <p>Bring forests, wetlands, and grasslands back to life with locally rooted restoration.</p>
+                <a href="#impact">See habitat work <span aria-hidden="true">↗</span></a>
+              </div>
+            </article>
+            <article class="pillar-card" data-reveal>
+              <img src="assets/community.svg" alt="A smiling young conservationist holding a seedling" />
+              <div class="pillar-copy">
+                <span>03</span>
+                <h3>Belong</h3>
+                <p>Build a future where people and wildlife can flourish together, generation after generation.</p>
+                <a href="#action">Join the movement <span aria-hidden="true">↗</span></a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="impact-section" id="impact" aria-labelledby="impact-title">
+        <div class="impact-photo" role="img" aria-label="A jaguar emerging through rainforest leaves"></div>
+        <div class="impact-shade" aria-hidden="true"></div>
+        <div class="shell impact-inner">
+          <div class="impact-copy" data-reveal>
+            <p class="section-label section-label-light">Progress you can feel</p>
+            <h2 id="impact-title">Real change.<br />Still growing.</h2>
+            <p>From restored migration routes to community-owned nurseries, each win becomes a foundation for the next.</p>
+            <button class="button button-ghost" type="button" data-open-story>Read our field journal</button>
+          </div>
+          <div class="metrics" aria-label="Illustrative impact metrics">
+            <article data-reveal><strong data-counter="42">0</strong><span>connected landscapes</span></article>
+            <article data-reveal><strong data-counter="1280">0</strong><span>species supported</span></article>
+            <article data-reveal><strong data-counter="6.4" data-decimals="1">0</strong><span>million hectares renewed</span></article>
+            <article data-reveal><strong data-counter="310">0</strong><span>community partners</span></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="stories section" id="stories">
+        <div class="shell">
+          <div class="section-heading stories-heading" data-reveal>
+            <div>
+              <p class="section-label">Field notes</p>
+              <h2>Good news from<br />the living world.</h2>
+            </div>
+            <p>Small moments become lasting change when people choose to care.</p>
+          </div>
+
+          <div class="story-layout">
+            <article class="story-feature" data-reveal>
+              <img src="assets/baby-elephant.svg" alt="A young elephant walking through green grass" />
+              <div class="story-feature-copy">
+                <p>Kenya · Migration corridor</p>
+                <h3>A new generation follows an old path home.</h3>
+                <button class="story-link" type="button" data-open-story>Read the story <span aria-hidden="true">→</span></button>
+              </div>
+            </article>
+
+            <div class="story-list">
+              <article data-reveal>
+                <span>01</span>
+                <div><p>Amazon basin</p><h3>One million native seedlings, grown by local hands.</h3></div>
+                <button type="button" aria-label="Open story" data-open-story>↗</button>
+              </article>
+              <article data-reveal>
+                <span>02</span>
+                <div><p>Western Ghats</p><h3>A safer forest crossing for elephants and families.</h3></div>
+                <button type="button" aria-label="Open story" data-open-story>↗</button>
+              </article>
+              <article data-reveal>
+                <span>03</span>
+                <div><p>Pacific coast</p><h3>Sea turtles return to a beach restored by volunteers.</h3></div>
+                <button type="button" aria-label="Open story" data-open-story>↗</button>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="action section" id="action">
+        <div class="shell action-shell">
+          <div class="action-intro" data-reveal>
+            <p class="section-label section-label-light">Choose your legacy</p>
+            <h2>Make the future<br />feel alive.</h2>
+            <p>Your support can protect habitat, train local conservation teams, and help the next wild generation thrive.</p>
+          </div>
+
+          <div class="giving-panel" data-reveal>
+            <div class="frequency-toggle" role="group" aria-label="Donation frequency">
+              <button class="is-active" type="button" data-frequency="monthly">Monthly</button>
+              <button type="button" data-frequency="once">One time</button>
+            </div>
+            <div class="amount-grid" role="group" aria-label="Choose donation amount">
+              <button type="button" data-amount="35">$35</button>
+              <button class="is-active" type="button" data-amount="75">$75</button>
+              <button type="button" data-amount="150">$150</button>
+              <button type="button" data-amount="300">$300</button>
+            </div>
+            <label class="custom-amount">
+              <span>Custom amount</span>
+              <span class="currency">$</span>
+              <input inputmode="decimal" min="1" step="1" type="number" placeholder="Other" data-custom-amount />
+            </label>
+            <button class="button button-gold button-wide" type="button" data-open-donate data-donate-summary>Give $75 monthly</button>
+            <p class="giving-note">Demo experience only. Connect a verified payment provider before accepting real donations.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="community-section">
+        <div class="shell community-inner">
+          <div class="community-copy" data-reveal>
+            <p class="section-label">You belong in this story</p>
+            <h2>A little wonder<br />in your inbox.</h2>
+            <p>Receive one uplifting field story each month—beautiful photography, measurable progress, and simple ways to help.</p>
+          </div>
+          <form class="newsletter" data-newsletter novalidate>
+            <label for="newsletter-email">Email address</label>
+            <div class="newsletter-row">
+              <input id="newsletter-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+              <button class="button button-dark" type="submit">Join the wild</button>
+            </div>
+            <p class="form-status" role="status" data-newsletter-status></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell footer-main">
+        <div class="footer-brand">
+          <a class="brand" href="#top">
+            <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M14 29c8-1 14-7 18-17 2 10-2 20-13 25M18 34c2-7 7-13 14-18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <span>AUREA <em>WILD</em></span>
+          </a>
+          <p>Protecting the wonder that makes our world feel alive.</p>
+        </div>
+        <div class="footer-links">
+          <div><h2>Explore</h2><a href="#mission">Our work</a><a href="#impact">Impact</a><a href="#stories">Stories</a></div>
+          <div><h2>Participate</h2><a href="#action">Donate</a><a href="#action">Volunteer</a><a href="#action">Partner</a></div>
+          <div><h2>Connect</h2><a href="#top">Instagram</a><a href="#top">YouTube</a><a href="#top">LinkedIn</a></div>
+        </div>
+      </div>
+      <div class="shell footer-bottom">
+        <p>© 2026 Aurea Wild. Fictional conservation website concept.</p>
+        <p>Designed with optimism for the living world.</p>
+      </div>
+    </footer>
+
+    <dialog class="modal" data-story-modal aria-labelledby="story-modal-title">
+      <div class="modal-art modal-art-story"></div>
+      <div class="modal-content">
+        <button class="modal-close" type="button" aria-label="Close story" data-close-modal>×</button>
+        <p class="section-label">A story of return</p>
+        <h2 id="story-modal-title">The path opened. The herd remembered.</h2>
+        <p>After years of community mapping, native planting, and wildlife-safe road improvements, a historic migration route began to breathe again. Rangers watched three generations of elephants cross together—calmly, safely, and on their own terms.</p>
+        <blockquote>“The happiest moment was not seeing the elephants arrive. It was seeing our children welcome them home.”</blockquote>
+        <button class="button button-primary" type="button" data-close-modal>Keep exploring</button>
+      </div>
+    </dialog>
+
+    <dialog class="modal donate-modal" data-donate-modal aria-labelledby="donate-modal-title">
+      <div class="modal-content">
+        <button class="modal-close" type="button" aria-label="Close donation dialog" data-close-modal>×</button>
+        <p class="section-label">Your hopeful act</p>
+        <h2 id="donate-modal-title">You’re giving <span data-modal-amount>$75 monthly</span>.</h2>
+        <p>This concept demonstrates the final confirmation step. No payment details are collected and no transaction will occur.</p>
+        <div class="demo-receipt"><span>Selected gift</span><strong data-modal-amount-receipt>$75 / month</strong></div>
+        <button class="button button-gold button-wide" type="button" data-confirm-demo>Complete demo donation</button>
+        <button class="text-button modal-secondary" type="button" data-close-modal>Go back</button>
+      </div>
+    </dialog>
+
+    <div class="toast" role="status" aria-live="polite" data-toast>Thank you—your hopeful act is ready.</div>
+  </body>
+</html>
